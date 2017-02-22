@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.louis.ayn.ofsta.MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/linearLayout2">
+
+        <Button
+            android:text="Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="doTest"
+            android:id="@+id/button" />
+    </ScrollView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/lightBackground"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout2">
+
+
+        <ImageButton
+            app:srcCompat="@mipmap/ic_photo_library_white"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:scaleType="fitCenter"
+            android:id="@+id/btnGallery"
+            android:padding="@dimen/navBarIconPadding"
+            android:onClick="bottomNavBarCall"
+            android:layout_weight="1" />
+
+        <ImageButton
+            app:srcCompat="@mipmap/ic_photo_camera_white"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:id="@+id/btnCamera"
+            android:background="@color/transparent"
+            android:padding="@dimen/navBarIconPadding"
+            android:onClick="bottomNavBarCall"
+            android:layout_weight="1" />
+
+        <ImageButton
+            app:srcCompat="@mipmap/ic_favorite_white"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:scaleType="fitCenter"
+            android:id="@+id/btnStar"
+            android:padding="@dimen/navBarIconPadding"
+            android:onClick="bottomNavBarCall"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</RelativeLayout>
