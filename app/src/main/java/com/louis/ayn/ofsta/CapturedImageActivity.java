@@ -21,7 +21,8 @@ public class CapturedImageActivity extends AppCompatActivity {
 
     Bitmap image;
     ImageView imageView;
-    String fileName;
+    String fileName, absolutePath;
+    File storageDir, img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +33,20 @@ public class CapturedImageActivity extends AppCompatActivity {
 
         Intent getIntent = getIntent();
         Bundle bundle = getIntent.getExtras();
-        image = (Bitmap) bundle.get("imageBitmap");
+        image = (Bitmap) bundle.get("data");
         imageView.setImageBitmap(image);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
         fileName = simpleDateFormat.format(new Date());
+        storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        try {
+            img = File.createTempFile(fileName, ".jpg", storageDir);
+
+            absolutePath = img.getAbsolutePath();
+
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     public void bottomImageOptions(View view) {

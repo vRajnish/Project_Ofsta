@@ -1,21 +1,13 @@
 package com.louis.ayn.ofsta;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.jar.Manifest;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == appCAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Intent saveImageIntent = new Intent(this, CapturedImageActivity.class);
-                saveImageIntent.putExtra("imageBitmap", data.getParcelableExtra("data"));
+                Bundle extras = data.getExtras();
+                saveImageIntent.putExtras(extras);
+
                 startActivity(saveImageIntent);
             } else {
                 btnGallery.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
