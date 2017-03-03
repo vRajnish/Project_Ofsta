@@ -39,10 +39,11 @@ public class CapturedImageActivity extends AppCompatActivity {
         if (id == R.id.btnImageShare) {
             Intent shareImage = new Intent();
             shareImage.setAction(Intent.ACTION_SEND);
-            shareImage.setType("image/*");
+            shareImage.setType("*/*");
             String path = MediaStore.Images.Media.insertImage(getContentResolver(), image, "Title", "Description");
             Uri bitUri = Uri.parse(path);
             shareImage.putExtra(Intent.EXTRA_STREAM, bitUri);
+            shareImage.putExtra(Intent.EXTRA_TEXT, "This image is click and sent by Ofsta");
             startActivity(Intent.createChooser(shareImage, "Share Image to..."));
         } else if (id == R.id.btnImageDelete) {
             // TODO: Delete Image
