@@ -1,10 +1,7 @@
 package com.louis.ayn.ofsta;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,17 +9,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class CapturedImageActivity extends AppCompatActivity {
 
     Bitmap image;
     ImageView imageView;
-    String fileName, absolutePath;
-    File storageDir, img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +27,6 @@ public class CapturedImageActivity extends AppCompatActivity {
         image = (Bitmap) bundle.get("data");
         imageView.setImageBitmap(image);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
-        fileName = simpleDateFormat.format(new Date());
-        storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        try {
-            img = File.createTempFile(fileName, ".jpg", storageDir);
-
-            absolutePath = img.getAbsolutePath();
-
-        } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
     }
 
     public void bottomImageOptions(View view) {
@@ -57,17 +37,11 @@ public class CapturedImageActivity extends AppCompatActivity {
             shareImage.setType("image/*");
             startActivity(Intent.createChooser(shareImage, "Share Image to..."));
         } else if (id == R.id.btnImageSave) {
-            saveImageToInternalStorage();
+            // TODO: Delete Image
         } else if (id == R.id.btnImageInfo) {
 
         } else {
             Toast.makeText(this, "-=BUG #3=-", Toast.LENGTH_LONG).show();
         }
-    }
-
-    public void saveImageToInternalStorage() {
-
-
-
     }
 }

@@ -1,8 +1,11 @@
 package com.louis.ayn.ofsta;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.GridView;
@@ -13,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
 
     int appCAMERA_REQUEST_CODE = 1;
 
-    GridView gridView;
     ImageButton btnGallery, btnCamera, btnStar;
 
     @Override
@@ -29,10 +31,6 @@ public class MainActivity extends AppCompatActivity {
         btnCamera.setBackgroundColor(getResources().getColor(R.color.transparent));
         btnStar.setBackgroundColor(getResources().getColor(R.color.transparent));
 
-
-
-        displayImages();
-
     }
 
     public void bottomNavBarCall(View view) {
@@ -47,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
             btnStar.setBackgroundColor(getResources().getColor(R.color.transparent));
 
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, appCAMERA_REQUEST_CODE);
 
         } else if (id == R.id.btnStar) {
             btnGallery.setBackgroundColor(getResources().getColor(R.color.transparent));
@@ -80,11 +77,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void displayImages() {
 
-    }
 
-    public void doTest(View view) {
 
     }
 
