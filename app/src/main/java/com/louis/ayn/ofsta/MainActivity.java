@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -71,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
             btnGallery.setBackgroundColor(getResources().getColor(R.color.transparent));
             btnCamera.setBackgroundColor(getResources().getColor(R.color.transparent));
             btnStar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        } else {
-            Toast.makeText(this, "-=BUG #1=-", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -88,14 +88,17 @@ public class MainActivity extends AppCompatActivity {
                 saveImageIntent.putExtras(extras);
 
                 startActivity(saveImageIntent);
-            } else {
+            } else if (resultCode == RESULT_CANCELED) {
                 btnGallery.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 btnCamera.setBackgroundColor(getResources().getColor(R.color.transparent));
                 btnStar.setBackgroundColor(getResources().getColor(R.color.transparent));
-
+                File tempDelete = new File(imageAbsolutePath);
+                if (tempDelete.exists()) {
+                    if (!tempDelete.delete()) {
+                        Toast.makeText(this, "WARNING: Can't Delete Temp File.", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
-        } else {
-            Toast.makeText(this, "-=BUG #2=-", Toast.LENGTH_LONG).show();
         }
     }
 

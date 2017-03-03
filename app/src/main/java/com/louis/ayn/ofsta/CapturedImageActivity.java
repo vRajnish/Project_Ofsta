@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+
 public class CapturedImageActivity extends AppCompatActivity {
 
     Bitmap image;
@@ -47,10 +49,16 @@ public class CapturedImageActivity extends AppCompatActivity {
             startActivity(Intent.createChooser(shareImage, "Share Image to..."));
         } else if (id == R.id.btnImageDelete) {
             // TODO: Delete Image
+            File imageDelete = new File(path);
+            if (imageDelete.exists()) {
+                if (imageDelete.delete()) {
+                    Toast.makeText(this, "Deleted", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Can't Delete", Toast.LENGTH_LONG).show();
+                }
+            }
         } else if (id == R.id.btnImageInfo) {
-
-        } else {
-            Toast.makeText(this, "-=BUG #3=-", Toast.LENGTH_LONG).show();
+            // TODO: Image Info
         }
     }
 }
