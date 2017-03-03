@@ -3,13 +3,13 @@ package com.louis.ayn.ofsta;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import java.io.File;
 
 public class CapturedImageActivity extends AppCompatActivity {
 
@@ -40,6 +40,9 @@ public class CapturedImageActivity extends AppCompatActivity {
             Intent shareImage = new Intent();
             shareImage.setAction(Intent.ACTION_SEND);
             shareImage.setType("image/*");
+            String path = MediaStore.Images.Media.insertImage(getContentResolver(), image, "Title", "Description");
+            Uri bitUri = Uri.parse(path);
+            shareImage.putExtra(Intent.EXTRA_STREAM, bitUri);
             startActivity(Intent.createChooser(shareImage, "Share Image to..."));
         } else if (id == R.id.btnImageDelete) {
             // TODO: Delete Image
