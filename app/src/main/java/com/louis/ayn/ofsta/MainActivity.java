@@ -8,15 +8,19 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     int appCAMERA_REQUEST_CODE = 1;
 
     ImageButton btnGallery, btnCamera, btnStar;
+    String imageAbsolutePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,23 @@ public class MainActivity extends AppCompatActivity {
 
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
+            if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+                File photoFile = null;
+                try {
+                    photoFile = getImageFile();
+                } catch (Exception e) {
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+                if (photoFile != null) {
+                    Uri photoURI = FileProvider.getUriForFile(this, "com.louis.ayn.ofsta", photoFile);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(cameraIntent, appCAMERA_REQUEST_CODE);
+                }
+
+            }
+
+
         } else if (id == R.id.btnStar) {
             btnGallery.setBackgroundColor(getResources().getColor(R.color.transparent));
             btnCamera.setBackgroundColor(getResources().getColor(R.color.transparent));
@@ -62,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == appCAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Intent saveImageIntent = new Intent(this, CapturedImageActivity.class);
-                Bundle extras = data.getExtras();
+                Bundle extras = new Bundle();
+                extras.putString("path", imageAbsolutePath);
                 saveImageIntent.putExtras(extras);
 
                 startActivity(saveImageIntent);
@@ -77,9 +99,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public File getImageFile() {
 
+        String fileName = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss ").format(new Date());
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = null;
+        try {
+            image = File.createTempFile(fileName, ".jpg", storageDir);
+            imageAbsolutePath = image.getAbsolutePath();
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
-
+        return  image;
     }
 
 }

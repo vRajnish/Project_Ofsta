@@ -38,12 +38,12 @@
             android:layout_weight="1" />
 
         <ImageButton
-            app:srcCompat="@mipmap/ic_save_white"
+            app:srcCompat="@mipmap/ic_delete_white"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@color/transparent"
             android:scaleType="fitCenter"
-            android:id="@+id/btnImageSave"
+            android:id="@+id/btnImageDelete"
             android:padding="@dimen/navBarIconPadding"
             android:onClick="bottomImageOptions"
             android:layout_weight="1" />

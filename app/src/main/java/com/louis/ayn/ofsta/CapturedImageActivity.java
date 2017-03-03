@@ -2,6 +2,7 @@ package com.louis.ayn.ofsta;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ public class CapturedImageActivity extends AppCompatActivity {
 
     Bitmap image;
     ImageView imageView;
+    String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,10 @@ public class CapturedImageActivity extends AppCompatActivity {
 
         Intent getIntent = getIntent();
         Bundle bundle = getIntent.getExtras();
-        image = (Bitmap) bundle.get("data");
+        path = bundle.getString("path");
+        Toast.makeText(this, path, Toast.LENGTH_LONG).show();
+
+        image = BitmapFactory.decodeFile(path);
         imageView.setImageBitmap(image);
 
     }
@@ -36,7 +41,7 @@ public class CapturedImageActivity extends AppCompatActivity {
             shareImage.setAction(Intent.ACTION_SEND);
             shareImage.setType("image/*");
             startActivity(Intent.createChooser(shareImage, "Share Image to..."));
-        } else if (id == R.id.btnImageSave) {
+        } else if (id == R.id.btnImageDelete) {
             // TODO: Delete Image
         } else if (id == R.id.btnImageInfo) {
 
