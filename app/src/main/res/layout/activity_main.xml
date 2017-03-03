@@ -14,12 +14,6 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/linearLayout2">
 
-        <Button
-            android:text="Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="doTest"
-            android:id="@+id/button" />
     </ScrollView>
 
     <LinearLayout

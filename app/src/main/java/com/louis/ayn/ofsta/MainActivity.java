@@ -1,28 +1,26 @@
 package com.louis.ayn.ofsta;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.util.jar.Manifest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     int appCAMERA_REQUEST_CODE = 1;
 
-    GridView gridView;
     ImageButton btnGallery, btnCamera, btnStar;
+    String imageAbsolutePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +34,6 @@ public class MainActivity extends AppCompatActivity {
         btnGallery.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         btnCamera.setBackgroundColor(getResources().getColor(R.color.transparent));
         btnStar.setBackgroundColor(getResources().getColor(R.color.transparent));
-
-
-
-        displayImages();
 
     }
 
@@ -55,7 +49,23 @@ public class MainActivity extends AppCompatActivity {
             btnStar.setBackgroundColor(getResources().getColor(R.color.transparent));
 
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, appCAMERA_REQUEST_CODE);
+
+            if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+                File photoFile = null;
+                try {
+                    photoFile = getImageFile();
+                } catch (Exception e) {
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+                if (photoFile != null) {
+                    Uri photoURI = FileProvider.getUriForFile(this, "com.louis.ayn.ofsta", photoFile);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(cameraIntent, appCAMERA_REQUEST_CODE);
+                }
+
+            }
+
 
         } else if (id == R.id.btnStar) {
             btnGallery.setBackgroundColor(getResources().getColor(R.color.transparent));
@@ -73,7 +83,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == appCAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Intent saveImageIntent = new Intent(this, CapturedImageActivity.class);
-                saveImageIntent.putExtra("imageBitmap", data.getParcelableExtra("data"));
+                Bundle extras = new Bundle();
+                extras.putString("path", imageAbsolutePath);
+                saveImageIntent.putExtras(extras);
+
                 startActivity(saveImageIntent);
             } else {
                 btnGallery.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -86,12 +99,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void displayImages() {
+    public File getImageFile() {
 
-    }
+        String fileName = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss ").format(new Date());
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = null;
+        try {
+            image = File.createTempFile(fileName, ".jpg", storageDir);
+            imageAbsolutePath = image.getAbsolutePath();
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
-    public void doTest(View view) {
-
+        return  image;
     }
 
 }
