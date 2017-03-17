@@ -8,10 +8,11 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     ImageButton btnGallery, btnCamera, btnStar;
     String imageAbsolutePath;
+    GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
         btnGallery = (ImageButton) findViewById(R.id.btnGallery);
         btnCamera = (ImageButton) findViewById(R.id.btnCamera);
         btnStar = (ImageButton) findViewById(R.id.btnStar);
+        gridView = (GridView) findViewById(R.id.gridView);
+
+        gridView.setAdapter(new ImageAdapter(this));
 
         btnGallery.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         btnCamera.setBackgroundColor(getResources().getColor(R.color.transparent));
