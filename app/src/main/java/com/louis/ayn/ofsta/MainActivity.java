@@ -8,7 +8,10 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     ImageButton btnGallery, btnCamera, btnStar;
     String imageAbsolutePath;
+    GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
         btnGallery = (ImageButton) findViewById(R.id.btnGallery);
         btnCamera = (ImageButton) findViewById(R.id.btnCamera);
         btnStar = (ImageButton) findViewById(R.id.btnStar);
+        gridView = (GridView) findViewById(R.id.gridView);
+
+        gridView.setAdapter(new ImageAdapter(this));
 
         btnGallery.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         btnCamera.setBackgroundColor(getResources().getColor(R.color.transparent));
@@ -71,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
             btnGallery.setBackgroundColor(getResources().getColor(R.color.transparent));
             btnCamera.setBackgroundColor(getResources().getColor(R.color.transparent));
             btnStar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        } else {
-            Toast.makeText(this, "-=BUG #1=-", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -88,14 +93,17 @@ public class MainActivity extends AppCompatActivity {
                 saveImageIntent.putExtras(extras);
 
                 startActivity(saveImageIntent);
-            } else {
+            } else if (resultCode == RESULT_CANCELED) {
                 btnGallery.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 btnCamera.setBackgroundColor(getResources().getColor(R.color.transparent));
                 btnStar.setBackgroundColor(getResources().getColor(R.color.transparent));
-
+                File tempDelete = new File(imageAbsolutePath);
+                if (tempDelete.exists()) {
+                    if (!tempDelete.delete()) {
+                        Toast.makeText(this, "WARNING: Can't Delete Temp File.", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
-        } else {
-            Toast.makeText(this, "-=BUG #2=-", Toast.LENGTH_LONG).show();
         }
     }
 
